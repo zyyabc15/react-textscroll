@@ -4069,6 +4069,11 @@ var Vertical = /** @class */ (function (_super) {
         _this.time = 1;
         _this.run = true;
         _this.position = 0;
+        _this.state = {
+            position: 0,
+            num: _this.props.text.length,
+            data: []
+        };
         _this.tick = function () {
             if (_this.time % Math.round((_this.props.speed || 5000) / 1000 * 60) === 0 && _this.run) {
                 cancelAnimationFrame(_this.innerTimer);
@@ -4107,11 +4112,7 @@ var Vertical = /** @class */ (function (_super) {
     Vertical.prototype.componentWillMount = function () {
         var data = this.props.text;
         data.push(data[0]);
-        this.state = {
-            position: 0,
-            num: this.props.text.length,
-            data: data
-        };
+        this.setState({ data: data });
     };
     Vertical.prototype.componentDidMount = function () {
         cancelAnimationFrame(this.innerTimer);
