@@ -4042,18 +4042,18 @@ var Horizontal = /** @class */ (function (_super) {
     };
     Horizontal.prototype.render = function () {
         var _this = this;
-        var Container = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n        position: relative;\n        left:", "px;\n        animation: changebox ", "s linear infinite;\n        animation-play-state: running;\n        animation-fill-mode: forwards;\n        &:hover {\n            animation-play-state: paused;\n            cursor: default;\n        }\n        @keyframes changebox {\n            0% {\n                transform: translateX(0);\n            }\n            100% {\n                transform: translateX(-", "px);\n            }\n        } \n        "], ["\n        position: relative;\n        left:", "px;\n        animation: changebox ", "s linear infinite;\n        animation-play-state: running;\n        animation-fill-mode: forwards;\n        &:hover {\n            animation-play-state: paused;\n            cursor: default;\n        }\n        @keyframes changebox {\n            0% {\n                transform: translateX(0);\n            }\n            100% {\n                transform: translateX(-", "px);\n            }\n        } \n        "])), this.state.container_width, this.state.duration, this.state.content_width);
-        var Item = styled.span(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n            display:inline-block;\n            margin-right: ", "px\n        "], ["\n            display:inline-block;\n            margin-right: ", "px\n        "])), this.state.container_width);
+        var Container = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n        position: relative;\n        height:30px;\n        left:", "px;\n        animation: changebox ", "s linear infinite;\n        animation-play-state: running;\n        animation-fill-mode: forwards;\n        \n        &:hover {\n            animation-play-state: paused;\n            cursor: default;\n        }\n        @keyframes changebox {\n            0% {\n                transform: translateX(0);\n            }\n            100% {\n                transform: translateX(-", "px);\n            }\n        } \n        "], ["\n        position: relative;\n        height:30px;\n        left:", "px;\n        animation: changebox ", "s linear infinite;\n        animation-play-state: running;\n        animation-fill-mode: forwards;\n        \n        &:hover {\n            animation-play-state: paused;\n            cursor: default;\n        }\n        @keyframes changebox {\n            0% {\n                transform: translateX(0);\n            }\n            100% {\n                transform: translateX(-", "px);\n            }\n        } \n        "])), this.state.container_width, this.state.duration, this.state.content_width);
+        var Item = styled.span(templateObject_2 || (templateObject_2 = __makeTemplateObject(["\n            display:inline-block;\n            line-height:30px;\n            margin-right: ", "px\n        "], ["\n            display:inline-block;\n            line-height:30px;\n            margin-right: ", "px\n        "])), this.state.container_width);
         return (react.createElement("div", { className: this.props.className },
             react.createElement(Container, { ref: function (div) { return _this.container = div; } }, this.props.text.map(function (e, i) {
-                return (react.createElement(Item, { key: i },
+                return (react.createElement(Item, { key: i, title: e },
                     " ",
                     e));
             }))));
     };
     return Horizontal;
 }(react.Component));
-var StyledHorizontal = styled(Horizontal)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n    width:100%;\n    height: 100%;\n    overflow: hidden;\n    word-break: keep-all;\n    white-space: nowrap;\n"], ["\n    width:100%;\n    height: 100%;\n    overflow: hidden;\n    word-break: keep-all;\n    white-space: nowrap;\n"])));
+var StyledHorizontal = styled(Horizontal)(templateObject_3 || (templateObject_3 = __makeTemplateObject(["\n    width:100%;\n    height: 40px;\n    overflow: hidden;\n    border-bottom: 1px solid #eee;\n    word-break: keep-all;\n    white-space: nowrap;\n    display:flex;\n    align-items:center;\n"], ["\n    width:100%;\n    height: 40px;\n    overflow: hidden;\n    border-bottom: 1px solid #eee;\n    word-break: keep-all;\n    white-space: nowrap;\n    display:flex;\n    align-items:center;\n"])));
 var templateObject_1;
 var templateObject_2;
 var templateObject_3;
@@ -4062,15 +4062,15 @@ var Li = styled.li(templateObject_1$1 || (templateObject_1$1 = __makeTemplateObj
 var Div = styled.div(templateObject_2$1 || (templateObject_2$1 = __makeTemplateObject(["\n  width: 100%;\n  overflow: hidden;\n  cursor: default;\n"], ["\n  width: 100%;\n  overflow: hidden;\n  cursor: default;\n"])));
 var Vertical = /** @class */ (function (_super) {
     __extends(Vertical, _super);
-    function Vertical(props) {
-        var _this = _super.call(this, props) || this;
+    function Vertical() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.timer = 0;
         _this.innerTimer = 0;
         _this.time = 1;
         _this.run = true;
         _this.position = 0;
         _this.tick = function () {
-            if (_this.time % Math.round(_this.props.speed / 1000 * 60 * 2) === 0 && _this.run) {
+            if (_this.time % Math.round((_this.props.speed || 5000) / 1000 * 60) === 0 && _this.run) {
                 cancelAnimationFrame(_this.innerTimer);
                 _this.innerTimer = requestAnimationFrame(_this.scroll);
                 _this.time = 0;
@@ -4102,15 +4102,17 @@ var Vertical = /** @class */ (function (_super) {
         _this.handleMouseLeave = function () {
             _this.run = true;
         };
-        var data = _this.props.text;
-        data.push(data[0]);
-        _this.state = {
-            position: 0,
-            num: _this.props.text.length,
-            data: data
-        };
         return _this;
     }
+    Vertical.prototype.componentWillMount = function () {
+        var data = this.props.text;
+        data.push(data[0]);
+        this.state = {
+            position: 0,
+            num: this.props.text.length,
+            data: data
+        };
+    };
     Vertical.prototype.componentDidMount = function () {
         cancelAnimationFrame(this.innerTimer);
         this.timer = requestAnimationFrame(this.tick);
@@ -4165,8 +4167,11 @@ var App = /** @class */ (function (_super) {
         return _this;
     }
     App.prototype.render = function () {
-        return (react.createElement("div", { style: { width: '200px', border: '1px solid black' } },
-            react.createElement(TextScroll, { text: this.data, mode: Mode.vertical, speed: 3000 })));
+        return (react.createElement("div", null,
+            react.createElement("div", { style: { width: '300px', border: '1px solid black', margin: '5px' } },
+                react.createElement(TextScroll, { text: this.data, mode: Mode.vertical, speed: 3000 })),
+            react.createElement("div", { style: { width: '300px', border: '1px solid black', margin: '5px' } },
+                react.createElement(TextScroll, { text: this.data, mode: Mode.horizontal, speed: 6000 }))));
     };
     return App;
 }(react.Component));
